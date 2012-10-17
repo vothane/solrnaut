@@ -7,7 +7,9 @@ SearchDelegator < ActiveRecord::Base
 end
 
 SearchProxy
-  search_on :SearchDelegator
+  include Solr::Naut
+
+  searchable_on :SearchDelegator
 end
 
 describe Solrnaut do
