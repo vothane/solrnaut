@@ -24,7 +24,7 @@ end
 class SearchProxy
   include Solr::Naut
 
-  searchable_on :SearchDelegator do |x|
+  searchable_on 'SearchDelegator' do |x|
 
   end  
 end

@@ -6,7 +6,7 @@ module Solr
 
       module ClassMethods
         def searchable_on(klass, &block)
-          SearchDelegator.send :searchable, &block 
+          klass.constantize.send :searchable, &block 
         end
       end
    end
