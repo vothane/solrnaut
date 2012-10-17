@@ -1,5 +1,4 @@
 require 'active_record' 
-require 'sunspot_rails'
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require 'solrnaut'
 

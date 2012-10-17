@@ -1,21 +1,44 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-ActiveRecord::Base.send :include, Sunspot::Rails::Searchable
+# mock sunspot searchable
+module Sunspot
+  module Rails
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
-SearchDelegator < ActiveRecord::Base
+    module ClassMethods
+      def searchable(options = {}, &block)
+        return true
+      end  
+    end
+  end
+end
+
+ActiveRecord::Base.send :include, Sunspot::Rails
+
+class SearchDelegator < ActiveRecord::Base
 
 end
 
-SearchProxy
+class SearchProxy
   include Solr::Naut
 
-  searchable_on :SearchDelegator
+  searchable_on :SearchDelegator do |x|
+
+  end  
 end
 
 describe Solrnaut do
 
-  it 'have searchable method proxy'
-    SearchProxy.should respond_to :searchable
+  it 'should have searchable method proxy' do
+    SearchProxy.should respond_to( :search_on )
   end
 
-End
+  it 'should proxy search calls to actual activerecord model that includes sunspot' do
+    #SearchProxy.search do |s|
+
+    #end  
+  end
+
+end
