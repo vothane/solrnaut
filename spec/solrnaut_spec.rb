@@ -13,7 +13,7 @@ end
 describe Solrnaut do
 
   it 'have searchable method proxy'
-    
+    SearchProxy.should respond_to :searchable
   end
 
 End
