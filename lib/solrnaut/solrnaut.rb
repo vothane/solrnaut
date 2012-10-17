@@ -5,8 +5,15 @@ module Solr
       end
 
       module ClassMethods
+        @klass
+
         def searchable_on(klass, &block)
-          klass.constantize.send :searchable, &block 
+          @klass = klass
+          @klass.constantize.send :searchable, &block 
+        end
+
+        def search(options = {}, &block)
+          @klass.constantize.send :search, options, &block 
         end
       end
    end

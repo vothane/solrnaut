@@ -11,6 +11,10 @@ module Sunspot
       def searchable(options = {}, &block)
         return "searchable method in AR model called"
       end  
+
+      def search(options = {}, &block)
+        return "found it in Solr using sunspot"
+      end
     end
   end
 end
@@ -36,11 +40,17 @@ end
 describe SearchProxy do
 
   it 'should have searchable method proxy' do
-    SearchProxy.should respond_to( :searchable_on )
+    SearchProxy.should respond_to :searchable_on 
   end
 
-  it 'should proxy search calls to actual activerecord model that includes sunspot' do
-     
+  it 'should have search method proxy' do
+    SearchProxy.should respond_to :search 
+  end
+
+  it 'should have delegate search to ActiveRecord model with sunspot that delegated search to proxy' do
+    SearchProxy.send( :search, {:query => "find this"} ) do
+      true
+    end.should == "found it in Solr using sunspot"
   end
 
 end
@@ -48,7 +58,7 @@ end
 describe DummyProxy do
 
   it 'should call the activerecord model that delegated search to DummyProxy' do
-    DummyProxy.send( :searchable_on, 'SearchDelegator') do
+    DummyProxy.send( :searchable_on, 'SearchDelegator' ) do
       true
     end.should == "searchable method in AR model called"
   end
