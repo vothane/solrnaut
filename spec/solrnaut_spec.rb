@@ -29,10 +29,10 @@ class SearchProxy
   end  
 end
 
-describe Solrnaut do
+describe SearchProxy do
 
   it 'should have searchable method proxy' do
-    SearchProxy.should respond_to( :search_on )
+    SearchProxy.should respond_to( :searchable_on )
   end
 
   it 'should proxy search calls to actual activerecord model that includes sunspot' do
