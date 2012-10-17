@@ -9,7 +9,7 @@ module Sunspot
 
     module ClassMethods
       def searchable(options = {}, &block)
-        return true
+        return "searchable method in AR model called"
       end  
     end
   end
@@ -29,6 +29,10 @@ class SearchProxy
   end  
 end
 
+class DummyProxy
+  include Solr::Naut 
+end
+
 describe SearchProxy do
 
   it 'should have searchable method proxy' do
@@ -36,9 +40,17 @@ describe SearchProxy do
   end
 
   it 'should proxy search calls to actual activerecord model that includes sunspot' do
-    #SearchProxy.search do |s|
+     
+  end
 
-    #end  
+end
+
+describe DummyProxy do
+
+  it 'should call the activerecord model that delegated search to DummyProxy' do
+    DummyProxy.send( :searchable_on, 'SearchDelegator') do
+      true
+    end.should == "searchable method in AR model called"
   end
 
 end
